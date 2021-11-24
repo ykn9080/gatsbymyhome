@@ -7,8 +7,8 @@ const Footer = () => {
   const [show, setShow] = useState(false)
 
   return (
-    <footer class="footer-distributed">
-      <div class="footer-left">
+    <footer className="footer-distributed">
+      <div className="footer-left">
         <LocalizedLink to="/">
           <span
             style={{
@@ -21,7 +21,7 @@ const Footer = () => {
           </span>
         </LocalizedLink>
 
-        <p class="footer-links">
+        <p className="footer-links">
           <LocalizedLink
             to="/"
             className="nav-link"
@@ -59,43 +59,43 @@ const Footer = () => {
         </p>
       </div>
 
-      <div class="footer-center">
+      <div className="footer-center">
         <div>
-          <i class="fa fa-map-marker"></i>
+          <i className="fa fa-map-marker"></i>
           <p>{intl.formatMessage({ id: "address" })}</p>
         </div>
 
         <div>
-          <i class="fa fa-phone"></i>
+          <i className="fa fa-phone"></i>
           <p> {intl.formatMessage({ id: "phone" })}</p>
         </div>
 
         <div>
-          <i class="fa fa-envelope"></i>
+          <i className="fa fa-envelope"></i>
           <p>
             <a href="mailto:ykn9080@empal.com">ykn9080@empal.com</a>
           </p>
         </div>
       </div>
 
-      <div class="footer-right">
-        <p class="footer-company-about">
+      <div className="footer-right">
+        <p className="footer-company-about">
           <span> {intl.formatMessage({ id: "about-me" })}</span>
           {intl.formatMessage({ id: "about-me-content" })}
         </p>
 
-        <div class="footer-icons">
+        <div className="footer-icons">
           <a href="#">
-            <i class="fa fa-facebook"></i>
+            <i className="fa fa-facebook"></i>
           </a>
           <a href="#">
-            <i class="fa fa-twitter"></i>
+            <i className="fa fa-twitter"></i>
           </a>
           <a href="#">
-            <i class="fa fa-linkedin"></i>
+            <i className="fa fa-linkedin"></i>
           </a>
           <a href="#">
-            <i class="fa fa-github"></i>
+            <i className="fa fa-github"></i>
           </a>
         </div>
       </div>

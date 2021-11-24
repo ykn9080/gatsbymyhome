@@ -1,3 +1,6 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 module.exports = {
   siteMetadata: {
     title: `Youngki Nam's Homepage`,
@@ -8,20 +11,6 @@ module.exports = {
   },
   pathPrefix: "/",
   plugins: [
-    // {
-    //   resolve: `gatsby-plugin-google-gtag`,
-    //   options: {
-    //     // You can add multiple tracking ids and a pageview event will be fired for all of them.
-    //     trackingIds: [
-    //       //"G-C80NGHXGM2"
-    //       "UA-808545-1",
-    //     ],
-    //     pluginConfig: {
-    //       // Puts tracking script in the head instead of the body
-    //       head: true,
-    //     },
-    //   },
-    // },
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
     {
@@ -137,13 +126,15 @@ module.exports = {
       },
     },
 
-    // {
-    //   resolve: `gatsby-source-contentful`,
-    //   options: {
-    //     spaceId: `2mzxuptpy7nt`,
-    //     accessToken: `lPQ0DvZyum44g5h1A69-SOus6JO3Jnnj_v3DxVKfMc8`,
-    //   },
-    // },
+    {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        // spaceId: process.env.CONTENTFUL_SPACEID,
+        // accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        spaceId: `uhmi5j2zwzig`,
+        accessToken: `h7m59ACy-8fIxQqUf3AVreQiBNIYug1SRj6QjKX_r_M`,
+      },
+    },
 
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline

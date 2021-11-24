@@ -1,10 +1,40 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { LocalizedLink as Link } from "gatsby-theme-i18n"
 import "../css/main.css"
 
 const WorkList = ({ data, type }) => {
-  console.log(data)
+  function beTouching(entries, ob) {
+    //entries all 30 paragraphs
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        console.log("intersecting")
+        //console.log(entry.target);
+        //console.log(entry.time, entry.intersectionRatio);
+        entry.target.classList.add("active")
+        //ob.unobserve(entry.target);
+      } else {
+        entry.target.classList.remove("active")
+      }
+    })
+  }
+  const handleContentLoaded = () => {
+    let options = {
+      root: null,
+      rootMargin: "-150px -50px",
+      threshold: 0.5,
+    }
+    let observer = new IntersectionObserver(beTouching, options)
+    console.log("runtimg.....")
+
+    document.querySelectorAll(".ImgContainer").forEach(dv => {
+      observer.observe(dv)
+    })
+  }
+  useEffect(() => {
+    if (type === "work") handleContentLoaded()
+  }, [])
+
   const list = data.map(dt => {
     return { title: dt.frontmatter.title, slug: dt.frontmatter.slug }
   })

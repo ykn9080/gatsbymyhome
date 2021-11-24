@@ -660,6 +660,10 @@ nav {
   position: relative;
   padding: 50px;
 }
+.shaking {
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
 .interestlist h5 {
   display: none;
   position: absolute;
@@ -668,10 +672,7 @@ nav {
   background-color: "transparent";
 }
 .interestlist img:hover {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
   animation: shake 0.5s;
-
-  /* When the animation is finished, start again */
   animation-iteration-count: infinite;
 }
 .ImgInterest {
@@ -812,7 +813,9 @@ nav {
   color: var(--textColor);
   padding: 15px;
   margin: 10px 0;
+  transition: padding 0.5s ease 100ms;
 }
+
 .ImgContainer:hover {
   padding: 20px;
 }
@@ -834,7 +837,14 @@ nav {
   padding: 5px;
   line-height: 1.2;
 }
-
+@media screen and (max-width: 480px) {
+  .ImgContainer {
+    transition: transform 0.5s linear, padding 0.5s ease 100ms;
+  }
+  .ImgContainer.active {
+    transform: scale(1.1);
+  }
+}
 .ContanierBox:hover {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
     rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
