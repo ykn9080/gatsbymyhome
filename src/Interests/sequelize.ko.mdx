@@ -1,0 +1,216 @@
+---
+title: Sequelize
+slug: sequelize
+seq: 8
+type: interest
+language: kr
+featureImage: ../images/interest/sequelize.png
+thumb: ../images/interest/sequelize1.png
+github: https://github.com/ykn9080/nodesequelize
+demo:
+excerpt: aws rds mysql과 node sequelize로 구현한 rest api
+---
+
+### sequelize setting
+
+#### model sample
+
+```js
+module.exports = (sequelize, Sequelize, db) => {
+  const customers = sequelize.define("customers", {
+    customerNumber: {
+      type: Sequelize.BIGINT(11),
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    customerName: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    contactLastName: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    contactFirstName: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    phone: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    addressLine1: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    addressLine2: {
+      type: Sequelize.STRING(50),
+    },
+    city: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    state: {
+      type: Sequelize.STRING(50),
+    },
+    postalCode: {
+      type: Sequelize.STRING(15),
+    },
+    country: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+    },
+    salesRepEmployeeNumber: {
+      type: Sequelize.BIGINT(11),
+    },
+    creditLimit: {
+      type: Sequelize.DECIMAL(10, 2),
+    },
+  })
+
+  db.customers = customers
+  return db
+}
+```
+
+#### controller sample
+
+```
+const db = require("../models");
+const express = require("express");
+const Tutorial = db.tutorials;
+const Op = db.Sequelize.Op;
+
+// Create and Save a new Tutorial
+module.exports = (Table) => {
+  const create = (req, res) => {
+
+    // Save  in the database
+    Table.create(req.body)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the Tutorial.",
+        });
+      });
+  };
+
+  // Retrieve all  from the database.
+  const readMany = (req, res) => {
+    const title = req.query.title;
+    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+
+    Table.findAll({ where: condition })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving tutorials.",
+        });
+      });
+  };
+
+  // Find a single  with an id
+  const readOne = (req, res) => {
+    console.log(req.params.id);
+    let id = req.params.id;
+    let name = req.query.name;
+
+    console.log("id:", id, "name", name, req.path);
+
+    Table.findByPk(id)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error retrieving Tutorial with id=" + id,
+        });
+      });
+  };
+
+  // Update  by the id in the request
+  const update = (req, res) => {
+    const id = req.params.id;
+
+    Table.update(req.body, {
+      where: { id: id },
+    })
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "Tutorial was updated successfully.",
+          });
+        } else {
+          res.send({
+            message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error updating Tutorial with id=" + id,
+        });
+      });
+  };
+
+  // Delete  with the specified id in the request
+  const remove = (req, res) => {
+    const id = req.params.id;
+
+    Table.destroy({
+      where: { id: id },
+    })
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "Tutorial was deleted successfully!",
+          });
+        } else {
+          res.send({
+            message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Could not delete Tutorial with id=" + id,
+        });
+      });
+  };
+
+
+  // ======
+  // Routes
+  // ======
+
+  let router = express.Router();
+
+  router.post("/", create);
+  router.get("/", readMany);
+  router.get("/:id", readOne);
+  router.put("/:id", update);
+  router.delete("/:id", remove);
+
+  return router;
+};
+```
+
+#### router sample
+
+```
+const crud = require("../controllers/reuseCRUD");
+module.exports = (app) => {
+  const db = require("../models");
+  app.use("/api/customers", crud(db.customers));
+
+```
+
+It's very convenient and inituitive to tag and edit later.
+Just add comment above each apis or create seperate documents for comments.
